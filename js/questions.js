@@ -1,41 +1,70 @@
 (function () {
+  const input = (id, label, placeholder = '') => ({ id, label, type: 'input', placeholder });
   const text = (id, label, placeholder = '') => ({ id, label, type: 'textarea', placeholder });
   const select = (id, label, options = ['Não sei informar', 'Não', 'Sim']) => ({ id, label, type: 'select', options });
 
   window.PromptQuestions = {
     types: [
-      ['feature', 'Nova funcionalidade', 'Criar um recurso dentro de um projeto existente.'],
-      ['bug', 'Correção de erro', 'Investigar e corrigir algo que não funciona.'],
-      ['visual', 'Ajuste visual ou de layout', 'Alterar aparência, organização ou responsividade.'],
-      ['integration', 'Integração com sistema ou API', 'Conectar serviços e trocar dados com segurança.'],
-      ['database', 'Alteração de banco de dados', 'Criar ou modificar estruturas e dados.'],
-      ['review', 'Revisão ou melhoria geral', 'Revisar qualidade, desempenho ou organização.'],
-      ['new-system', 'Criação de novo sistema', 'Planejar e construir uma solução do zero.'],
-      ['deploy', 'Publicação, hospedagem ou configuração', 'Colocar o projeto no ar ou ajustar o ambiente.'],
-      ['security', 'Segurança, permissões ou autenticação', 'Controlar acessos e proteger informações.'],
-      ['other', 'Outro', 'Descrever uma necessidade que não se encaixa acima.']
+      ['visual', 'Ajuste visual', 'Layout, responsividade ou aparência'],
+      ['bug', 'Correção de erro', 'Comportamento incorreto ou falha'],
+      ['feature', 'Nova funcionalidade', 'Novo recurso em projeto existente'],
+      ['integration', 'Integração', 'Conexão com sistema ou API'],
+      ['database', 'Banco de dados', 'Estruturas, dados ou migrações'],
+      ['new-system', 'Projeto do zero', 'Criação de um novo sistema'],
+      ['deploy', 'Publicação', 'Hospedagem ou configuração'],
+      ['security', 'Autenticação', 'Login, segurança ou permissões'],
+      ['review', 'Revisão geral', 'Qualidade, organização ou desempenho'],
+      ['other', 'Outro', 'Solicitação não classificada']
     ].map(([id, title, description]) => ({ id, title, description })),
 
     conditional: {
-      feature: [text('featureName','Qual funcionalidade será criada?'),text('featureLocation','Onde ela aparecerá?'),text('allowedUsers','Quem poderá utilizá-la?'),text('inputData','Quais dados serão informados?'),text('outputData','Quais dados serão exibidos?'),text('userActions','Quais ações poderão ser executadas?'),text('validations','Quais validações devem existir?'),text('errorCases','Quais situações de erro devem ser tratadas?'),select('mobile','Deverá funcionar em celular?'),select('changesDatabase','Deverá alterar o banco de dados?'),select('hasIntegration','Deverá integrar com outro sistema?'),select('differentPermissions','Haverá permissões diferentes por usuário?'),text('specificPreserve','Quais recursos atuais não podem ser alterados?')],
-      bug: [text('errorDescription','Qual erro está ocorrendo?'),text('errorLocation','Em qual tela ou funcionalidade?'),text('actualBehavior','Qual é o comportamento atual?'),text('bugExpected','Qual é o comportamento esperado?'),text('whenHappens','Quando o erro acontece?'),text('errorMessage','Existe mensagem de erro?'),select('frequency','Com que frequência ocorre?',['Não sei informar','Sempre','Às vezes','Uma vez']),text('attemptedFixes','Quais correções já foram tentadas?'),text('evidence','Existem imagens, logs ou evidências? Informe apenas a localização, sem dados sensíveis.'),text('specificPreserve','Quais partes não devem ser modificadas?')],
-      visual: [text('screen','Qual tela será alterada?'),text('element','Qual elemento precisa de ajuste?'),text('visualCurrent','Como está atualmente?'),text('visualExpected','Como deverá ficar?'),text('reference','Existe imagem de referência? Onde?'),select('mobile','Deve funcionar em celular?'),select('keepVisualPattern','Deve manter o padrão visual atual?'),select('allowWebChanges','Podem ser alterados HTML, CSS e JavaScript?'),select('singleScreen','A mudança deve ocorrer somente em uma tela?'),text('specificPreserve','Quais comportamentos devem ser preservados?')],
-      integration: [text('service','Qual sistema ou serviço será integrado?'),text('integrationGoal','Qual é o objetivo da integração?'),text('sentData','Quais dados serão enviados?'),text('receivedData','Quais dados serão recebidos?'),text('frequency','Qual será a frequência?'),select('authentication','Haverá autenticação?'),text('failureHandling','Como tratar falhas?'),select('logs','Deverá haver registro de logs?'),select('automaticSync','Haverá sincronização automática?'),select('apiDocs','Você conhece a documentação da API?'),select('credentialsAvailable','Existem credenciais disponíveis? Não as informe aqui.'),text('sensitiveInfo','Quais informações sensíveis não podem ser expostas?')],
-      database: [text('storedInfo','Qual informação será armazenada?'),select('tableChange','A alteração envolve tabela?',['Não sei informar','Criar nova tabela','Alterar tabela existente','Ambos']),text('fields','Quais campos serão necessários?'),text('requiredFields','Quais campos serão obrigatórios?'),text('relationships','Quais relacionamentos existirão?'),text('existingData','Como tratar dados existentes?'),select('dataMigration','Será necessário migrar dados?'),select('reversible','A alteração poderá ser revertida?'),select('historyNeeded','Deverá existir histórico?'),select('softDelete','Deverá existir exclusão lógica?'),text('affectedQueries','Quais consultas ou relatórios serão afetados?')],
-      review: [text('reviewArea','Qual parte do projeto deve ser revisada?'),text('reviewGoal','Qual é o objetivo da revisão?'),text('perceivedProblems','Quais problemas foram percebidos?'),select('reviewPriority','Qual é a prioridade?',['Usabilidade','Desempenho','Organização','Segurança','Manutenção']),select('changeArchitecture','O agente pode modificar a arquitetura?'),select('refactorFiles','Pode refatorar arquivos?'),select('deleteUnused','Pode excluir código não utilizado?'),text('specificPreserve','Quais funcionalidades devem permanecer inalteradas?'),text('improvementValidation','Como a melhoria será validada?')],
-      'new-system': [text('systemGoal','Qual é o objetivo do sistema?'),text('systemUsers','Quem utilizará?'),text('mainFeatures','Quais são as funcionalidades principais?'),select('devices','Em quais dispositivos?',['Computador e celular','Computador','Celular','Tablet','Não sei informar']),select('loginNeeded','Precisa de login?'),text('userTypes','Quais tipos de usuário?'),text('storedData','Quais dados serão armazenados?'),text('reports','Quais relatórios serão necessários?'),text('integrations','Quais integrações?'),select('offline','Precisa funcionar offline?'),select('sync','Precisa de sincronização?'),text('hosting','Qual hospedagem está prevista?'),text('userVolume','Qual volume estimado de usuários?'),select('backups','Precisa de backups?'),text('mvpCriteria','Quais critérios mínimos para a primeira versão?')],
-      deploy: [text('currentLocation','Onde o projeto está atualmente?'),text('publishTarget','Onde deverá ser publicado?'),text('domain','Qual domínio ou subdomínio?'),select('https','Precisa de HTTPS?'),select('envVars','Precisa de variáveis de ambiente?'),text('databaseUsed','Qual banco de dados é utilizado?'),text('updateProcess','Como será o processo de atualização?'),select('backupNeeded','Precisa de backup?'),select('rollbackNeeded','Precisa de rollback?'),text('deployErrors','Existem erros atuais de publicação?'),text('hostingRestrictions','Quais são as restrições da hospedagem?')],
-      security: [text('securityUsers','Quais usuários existirão?'),text('roles','Quais perfis de acesso?'),text('roleView','O que cada perfil poderá visualizar?'),text('roleEdit','O que cada perfil poderá editar?'),select('loginNeeded','Precisa de login?'),select('passwordRecovery','Precisa de recuperação de senha?'),select('socialAuth','Precisa de autenticação Google ou Microsoft?'),select('logs','Precisa de logs?'),text('sensitiveData','Quais dados são sensíveis?'),text('sessionTime','Qual tempo de sessão?'),select('attemptLock','Bloquear após tentativas inválidas?'),select('lgpd','Precisa atender à LGPD?')],
-      other: [text('otherDetails','Descreva os detalhes adicionais da solicitação.'),text('specificPreserve','O que deve ser preservado?')]
+      visual: {
+        primary: [input('element','Qual elemento precisa ser ajustado?','Ex.: barra de ações da reunião'),select('mobile','Deve funcionar em celular?'),input('reference','Existe imagem de referência?','Ex.: anexo ou caminho do arquivo')],
+        more: [select('keepVisualPattern','Manter o padrão visual atual?'),select('singleScreen','A alteração fica somente nesta tela?'),input('affectedScreens','Outras telas podem ser afetadas?')]
+      },
+      bug: {
+        primary: [input('whenHappens','Quando o erro acontece?','Ex.: ao salvar um registro'),input('errorMessage','Qual mensagem aparece?','Ex.: informe o texto, sem dados sensíveis'),text('reproductionSteps','Quais passos reproduzem o erro?','Ex.: abrir cadastro, editar e salvar')],
+        more: [select('frequency','Com que frequência ocorre?',['Não sei informar','Sempre','Às vezes','Uma vez']),input('evidence','Onde estão as evidências?','Ex.: caminho de imagens ou logs'),input('attemptedFixes','O que já foi tentado?')]
+      },
+      feature: {
+        primary: [input('allowedUsers','Quem utilizará?','Ex.: administradores'),text('userActions','Quais ações estarão disponíveis?','Ex.: criar, editar e exportar'),text('inputData','Quais dados serão informados?','Ex.: nome, data e responsável'),text('outputData','Quais dados serão exibidos?','Ex.: status e histórico')],
+        more: [text('validations','Quais validações são necessárias?'),select('differentPermissions','Haverá permissões diferentes?'),select('mobile','Deve funcionar em celular?'),input('impact','Quais impactos são esperados?')]
+      },
+      integration: {
+        primary: [input('service','Qual sistema será integrado?','Ex.: Google Sheets'),text('sentData','Quais dados serão enviados?'),text('receivedData','Quais dados serão recebidos?'),select('authentication','A integração exige autenticação?')],
+        more: [input('frequency','Qual será a frequência?'),text('failureHandling','Como tratar falhas?'),select('logs','Registrar logs?'),input('apiDocs','Onde está a documentação?')]
+      },
+      database: {
+        primary: [text('storedInfo','Qual informação será armazenada?'),select('dataMigration','Será necessária migração?'),text('existingData','Como os dados existentes devem ser tratados?')],
+        more: [select('historyNeeded','Precisa manter histórico?'),select('rollbackNeeded','Precisa de rollback?'),input('fields','Quais campos são esperados?'),input('affectedQueries','Quais consultas ou relatórios podem ser afetados?')]
+      },
+      'new-system': {
+        primary: [input('projectName','Nome do projeto','Ex.: Agenda de visitas'),text('systemGoal','Objetivo principal','Ex.: organizar visitas da equipe'),select('appType','Tipo de aplicação',['Não sei informar','Aplicação web','Aplicativo móvel','Site','Sistema interno','Outro']),input('systemUsers','Quem utilizará?','Ex.: equipe comercial'),select('devices','Dispositivos de acesso',['Computador e celular','Computador','Celular','Tablet','Não sei informar']),text('mainFeatures','Funcionalidades essenciais','Ex.: cadastro, agenda e relatório')],
+        more: [select('loginNeeded','Precisa de login?'),text('storedData','Quais dados serão armazenados?'),text('integrations','Quais integrações serão necessárias?'),input('hosting','Onde pretende publicar?'),input('technologyPreference','Preferência tecnológica (opcional)','Deixe em branco para receber uma recomendação')]
+      },
+      deploy: {
+        primary: [input('publishTarget','Onde deverá ser publicado?','Ex.: GitHub Pages ou Hostinger'),input('domain','Domínio ou subdomínio','Ex.: app.exemplo.com.br'),text('deployErrors','Existem erros atuais de publicação?')],
+        more: [select('https','Precisa de HTTPS?'),select('envVars','Usa variáveis de ambiente?'),select('backupNeeded','Precisa de backup?'),select('rollbackNeeded','Precisa de rollback?')]
+      },
+      security: {
+        primary: [input('roles','Quais perfis de acesso existirão?','Ex.: administrador e usuário'),text('roleView','O que cada perfil poderá visualizar?'),text('roleEdit','O que cada perfil poderá alterar?'),select('socialAuth','Usará login Google ou Microsoft?')],
+        more: [select('passwordRecovery','Precisa recuperar senha?'),select('logs','Precisa de logs?'),input('sessionTime','Tempo de sessão esperado'),select('lgpd','Precisa atender à LGPD?')]
+      },
+      review: {
+        primary: [input('reviewArea','Qual parte deve ser revisada?','Ex.: fluxo de cadastro'),select('reviewPriority','Principal foco',['Usabilidade','Desempenho','Organização','Segurança','Manutenção']),text('improvementValidation','Como a melhoria será validada?')],
+        more: [select('changeArchitecture','Pode modificar a arquitetura?'),select('refactorFiles','Pode refatorar arquivos?'),select('deleteUnused','Pode remover código sem uso?')]
+      },
+      other: {
+        primary: [text('otherDetails','Há algum detalhe específico que ajude a compreender a solicitação?')],
+        more: []
+      }
     },
 
-    general: [
-      select('priority','Nível de prioridade',['Baixa','Média','Alta','Urgente']),
-      text('deadline','Prazo desejado'), text('impact','Impacto esperado'),
-      select('affectsScreens','Pode afetar outras telas?'), select('activeUsers','O projeto possui usuários ativos?'),
-      select('createBackup','Criar backup antes da alteração?'), select('createBranch','Criar uma branch Git?'),
-      select('createCommit','Gerar commit?'), select('runTests','Executar testes?',['Sim','Não','Não sei informar']),
-      select('documentChanges','Documentar as alterações?',['Sim','Não','Não sei informar'])
+    sharedMore: [
+      input('involvedArea','Tela, módulo ou funcionalidade','Ex.: reunião semanal'),
+      select('priority','Prioridade',['Não informada','Baixa','Média','Alta','Urgente']),
+      input('deadline','Prazo desejado','Ex.: até o fim do mês'),
+      text('additionalNotes','Observações adicionais','Inclua somente informações relevantes.')
     ]
   };
 }());

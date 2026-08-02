@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Transforme uma ideia em uma especificação técnica pronta para agentes de programação.">
+  <meta name="description" content="Transforme uma solicitação simples em uma especificação pronta para um agente de programação.">
   <meta name="theme-color" content="#102a43">
   <title>Gerador de Prompts para Codex e Antigravity</title>
   <link rel="stylesheet" href="css/style.css">
@@ -12,115 +12,102 @@
   <a class="skip-link" href="#main">Ir para o conteúdo</a>
   <header class="site-header">
     <div class="header-inner">
-      <div class="brand-mark" aria-hidden="true">GP</div>
-      <div>
-        <p class="eyebrow">Especificações mais claras. Implementações mais seguras.</p>
-        <h1>Gerador de Prompts para Codex e Antigravity</h1>
-        <p class="subtitle">Transforme sua ideia em uma especificação técnica pronta para implementação.</p>
-      </div>
+      <div class="brand"><span class="brand-mark" aria-hidden="true">GP</span><div><h1>Gerador de Prompts</h1><p>De uma ideia simples para uma especificação clara.</p></div></div>
+      <nav class="header-actions" aria-label="Ferramentas">
+        <button type="button" class="header-button" id="openTemplates">Modelos rápidos</button>
+        <button type="button" class="header-button" id="openPreferences">Preferências</button>
+      </nav>
     </div>
   </header>
 
   <main id="main" class="app-shell">
-    <div class="privacy-notice" role="note">
-      <span aria-hidden="true">●</span>
-      <p><strong>Privacidade local:</strong> as informações permanecem neste navegador. Não insira senhas, tokens, chaves de API ou dados confidenciais.</p>
-    </div>
+    <div class="privacy-notice" role="note"><span aria-hidden="true">●</span><p>As informações ficam neste navegador. Não insira senhas, tokens, chaves de API ou dados confidenciais.</p></div>
 
     <section class="workspace" aria-label="Gerador de especificação">
       <div class="progress-card">
-        <div class="progress-copy">
-          <span id="stepLabel">Etapa 1 de 6</span>
-          <span id="stepName">Tipo de solicitação</span>
-        </div>
-        <div class="progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1" aria-label="Progresso do formulário">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
-        <ol class="step-dots" aria-label="Etapas">
-          <li class="active">Tipo</li><li>Projeto</li><li>Necessidade</li><li>Detalhes</li><li>Revisão</li><li>Resultado</li>
-        </ol>
+        <div class="progress-copy"><span id="stepLabel">Etapa 1 de 3</span><strong id="stepName">Solicitação principal</strong></div>
+        <div class="progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" aria-label="Progresso do formulário"><div id="progressBar" class="progress-bar"></div></div>
+        <ol class="step-dots" aria-label="Etapas"><li class="active">Solicitação</li><li>Detalhes</li><li>Revisão e prompt</li></ol>
       </div>
 
       <form id="promptForm" novalidate>
         <section class="step-panel active" data-step="1" aria-labelledby="heading-1">
-          <div class="section-heading">
-            <div><p class="step-kicker">Comece por aqui</p><h2 id="heading-1">O que você precisa fazer?</h2></div>
-            <p>Escolha a opção mais próxima da sua necessidade.</p>
-          </div>
-          <div id="typeGrid" class="type-grid"></div>
-          <div class="quick-templates">
-            <div class="section-heading compact"><div><p class="step-kicker">Atalhos</p><h3>Modelos rápidos</h3></div><p>Comece com respostas sugeridas e personalize tudo.</p></div>
-            <div id="templateGrid" class="template-grid"></div>
+          <div class="section-heading"><div><p class="step-kicker">Conte com suas palavras</p><h2 id="heading-1" tabindex="-1">Qual mudança você precisa?</h2></div><p>Quatro respostas bastam para começar. O agente analisará o projeto para descobrir os detalhes técnicos.</p></div>
+          <div class="core-grid">
+            <div class="field"><label for="desiredChange">O que você quer mudar? <span class="required">Obrigatório</span></label><textarea class="compact-textarea auto-grow" id="desiredChange" name="desiredChange" required rows="3" placeholder="Ex.: Quero reorganizar os botões para ficarem na mesma linha."></textarea></div>
+            <div class="field"><label for="currentBehavior">Como funciona atualmente? <span class="required">Obrigatório</span></label><textarea class="compact-textarea auto-grow" id="currentBehavior" name="currentBehavior" required rows="3" placeholder="Ex.: Os botões ficam em linhas diferentes e ocupam muita altura."></textarea></div>
+            <div class="field"><label for="expectedResult">Como deve funcionar? <span class="required">Obrigatório</span></label><textarea class="compact-textarea auto-grow" id="expectedResult" name="expectedResult" required rows="3" placeholder="Ex.: Devem ficar lado a lado e se reorganizar no celular."></textarea></div>
+            <div class="field"><label for="preserve">O que não pode ser prejudicado? <span class="required">Obrigatório</span></label><textarea class="compact-textarea auto-grow" id="preserve" name="preserve" required rows="3" placeholder="Ex.: Não alterar salvamento, exportação, histórico ou dados."></textarea></div>
           </div>
         </section>
 
         <section class="step-panel" data-step="2" aria-labelledby="heading-2" hidden>
-          <div class="section-heading"><div><p class="step-kicker">Contexto</p><h2 id="heading-2">Conte sobre o projeto</h2></div><p>Não sabe a tecnologia? Sem problema — esse campo é opcional.</p></div>
-          <div class="form-grid">
-            <div class="field"><label for="projectName">Nome do projeto <span class="required">Obrigatório</span></label><input id="projectName" name="projectName" required placeholder="Ex.: Portal de atendimento"><small>Use um nome que ajude o agente a localizar o projeto.</small></div>
-            <div class="field"><label for="projectPurpose">Finalidade do sistema <span class="optional">Opcional</span></label><textarea id="projectPurpose" name="projectPurpose" rows="3" placeholder="Ex.: Gerenciar solicitações dos clientes"></textarea></div>
-            <div class="field"><label for="technology">Tecnologia utilizada <span class="optional">Opcional</span></label><input id="technology" name="technology" placeholder="Ex.: Não sei, HTML/CSS/JS, Python"></div>
-            <div class="field"><label for="projectLocation">Onde o projeto está armazenado? <span class="optional">Opcional</span></label><input id="projectLocation" name="projectLocation" placeholder="Ex.: GitHub, pasta local, Google Drive"></div>
-            <div class="field"><label for="tool">Ferramenta que executará o trabalho</label><select id="tool" name="tool"><option>Codex</option><option>Google Antigravity</option><option>Claude Code</option><option>Outra</option></select></div>
-            <fieldset class="field"><legend>Estado do projeto</legend><div class="choice-row"><label><input type="radio" name="projectState" value="Projeto existente" checked> Já existe</label><label><input type="radio" name="projectState" value="Criar do zero"> Criar do zero</label></div></fieldset>
-          </div>
-        </section>
-
-        <section class="step-panel" data-step="3" aria-labelledby="heading-3" hidden>
-          <div class="section-heading"><div><p class="step-kicker">Necessidade</p><h2 id="heading-3">Explique com suas palavras</h2></div><p>Escreva de forma simples. O gerador cuidará da organização técnica.</p></div>
-          <div class="form-grid single">
-            <div class="field"><label for="desiredChange">O que você deseja fazer? <span class="required">Obrigatório</span></label><textarea id="desiredChange" name="desiredChange" required rows="4" placeholder="Ex.: Quero adicionar um botão para exportar a lista de clientes em PDF."></textarea></div>
-            <div class="field"><label for="currentProblem">Qual problema existe atualmente? <span class="optional">Opcional</span></label><textarea id="currentProblem" name="currentProblem" rows="3" placeholder="Ex.: Hoje é preciso copiar os dados manualmente."></textarea></div>
-            <div class="field"><label for="currentBehavior">Como o sistema funciona hoje? <span class="required">Obrigatório</span></label><textarea id="currentBehavior" name="currentBehavior" required rows="3" placeholder="Ex.: A tela mostra a lista, mas não oferece opção de exportação."></textarea></div>
-            <div class="field"><label for="expectedResult">Como deverá funcionar depois? <span class="required">Obrigatório</span></label><textarea id="expectedResult" name="expectedResult" required rows="4" placeholder="Ex.: Ao clicar em Exportar, o sistema baixa um PDF com os filtros aplicados."></textarea></div>
-            <div class="field"><label for="targetUsers">Quem utilizará a funcionalidade? <span class="optional">Opcional</span></label><input id="targetUsers" name="targetUsers" placeholder="Ex.: equipe comercial e administradores"></div>
-            <div class="field"><label for="successOutcome">Qual resultado é esperado? <span class="optional">Opcional</span></label><textarea id="successOutcome" name="successOutcome" rows="3" placeholder="Ex.: reduzir o tempo gasto na preparação do relatório."></textarea></div>
-            <div class="field"><label for="preserve">Funcionalidades que não podem ser prejudicadas <span class="required">Obrigatório</span></label><textarea id="preserve" name="preserve" required rows="3" placeholder="Ex.: filtros atuais, cadastro de clientes e permissões existentes."></textarea></div>
-          </div>
-        </section>
-
-        <section class="step-panel" data-step="4" aria-labelledby="heading-4" hidden>
-          <div class="section-heading"><div><p class="step-kicker">Detalhes</p><h2 id="heading-4">Complete os pontos importantes</h2></div><p id="conditionalIntro">As perguntas abaixo foram adaptadas ao tipo escolhido.</p></div>
+          <div class="section-heading"><div><p class="step-kicker">Perguntas relevantes</p><h2 id="heading-2" tabindex="-1">Complete somente o que souber</h2></div><p>Identificamos o tipo pela sua descrição. Você pode corrigir a classificação abaixo.</p></div>
+          <div class="detected-type"><span>Tipo identificado</span><strong id="detectedTypeLabel">Nova funcionalidade</strong></div>
+          <div id="typeSegments" class="type-segments" role="radiogroup" aria-label="Tipo de solicitação"></div>
           <div id="conditionalFields" class="form-grid"></div>
-          <div class="divider"></div>
-          <div class="section-heading compact"><div><p class="step-kicker">Em qualquer projeto</p><h3>Entrega e segurança</h3></div></div>
-          <div id="generalFields" class="form-grid"></div>
+          <details class="more-details" id="moreDetails">
+            <summary>Mais detalhes <span>Opcional</span></summary>
+            <div id="moreFields" class="form-grid"></div>
+          </details>
         </section>
 
-        <section class="step-panel" data-step="5" aria-labelledby="heading-5" hidden>
-          <div class="section-heading"><div><p class="step-kicker">Conferência</p><h2 id="heading-5">Revise antes de gerar</h2></div><p>Volte às etapas anteriores se quiser complementar alguma resposta.</p></div>
-          <div id="reviewContent" class="review-content"></div>
-          <div id="reviewWarnings" class="review-warnings" aria-live="polite"></div>
-        </section>
-
-        <section class="step-panel" data-step="6" aria-labelledby="heading-6" hidden>
-          <div class="result-hero">
-            <div><p class="step-kicker">Pronto para usar</p><h2 id="heading-6">Sua especificação foi gerada</h2><p>Copie o prompt para o agente escolhido ou baixe o documento completo.</p></div>
-            <div class="result-badges"><span id="complexityBadge" class="badge"></span><span id="executionBadge" class="badge secondary"></span></div>
+        <section class="step-panel result-panel" data-step="3" aria-labelledby="heading-3" hidden>
+          <div class="result-hero"><div><p class="step-kicker">Revisão e geração</p><h2 id="heading-3" tabindex="-1">Sua solicitação está pronta</h2><p>Confira a análise e copie o conteúdo para o agente.</p></div><div class="result-badges"><span id="complexityBadge" class="badge"></span><span id="executionBadge" class="badge secondary"></span></div></div>
+          <div class="insight-grid">
+            <article class="insight"><h3>Resumo</h3><p id="reviewSummary"></p></article>
+            <article class="insight"><h3>Premissas</h3><ul id="assumptionsList"></ul></article>
+            <article class="insight"><h3>Pontos a confirmar</h3><ul id="missingList"></ul></article>
+            <article class="insight"><h3>Riscos</h3><ul id="risksList"></ul></article>
           </div>
           <div id="complexityReason" class="analysis-card"></div>
-          <div class="result-tabs" role="tablist" aria-label="Resultado"><button type="button" class="tab active" role="tab" aria-selected="true" data-result-tab="spec">Especificação completa</button><button type="button" class="tab" role="tab" aria-selected="false" data-result-tab="prompt">Prompt final</button></div>
+          <div class="result-tabs" role="tablist" aria-label="Resultado"><button type="button" class="tab active" role="tab" aria-selected="true" data-result-tab="spec">Especificação</button><button type="button" class="tab" role="tab" aria-selected="false" data-result-tab="prompt">Prompt final</button></div>
           <pre id="specOutput" class="output active" tabindex="0"></pre>
           <pre id="promptOutput" class="output" tabindex="0" hidden></pre>
-          <div class="result-actions"><button type="button" id="copyPrompt" class="button">Copiar prompt</button><button type="button" id="copySpec" class="button secondary">Copiar especificação completa</button><button type="button" id="downloadTxt" class="button ghost">Baixar como TXT</button><button type="button" id="newPrompt" class="button ghost">Novo prompt</button></div>
+          <div class="result-actions"><button type="button" id="copyPrompt" class="button">Copiar prompt</button><button type="button" id="copySpec" class="button secondary">Copiar especificação</button><button type="button" id="downloadTxt" class="button ghost">Baixar TXT</button><button type="button" id="newPrompt" class="button ghost">Novo prompt</button></div>
         </section>
 
         <div class="form-actions" id="formActions">
           <button type="button" id="prevButton" class="button ghost" disabled>Anterior</button>
-          <div class="action-group"><button type="button" id="saveDraft" class="button ghost">Salvar rascunho</button><button type="button" id="clearForm" class="button danger-ghost">Limpar formulário</button><button type="button" id="nextButton" class="button">Próximo</button><button type="button" id="generateButton" class="button" hidden>Gerar especificação</button></div>
+          <div class="action-group"><button type="button" id="saveDraft" class="button subtle">Salvar rascunho</button><button type="button" id="clearForm" class="button danger-ghost">Limpar</button><button type="button" id="nextButton" class="button">Próximo</button><button type="button" id="generateButton" class="button" hidden>Gerar prompt</button></div>
         </div>
       </form>
     </section>
 
     <section class="history-section" aria-labelledby="historyHeading">
-      <div class="section-heading"><div><p class="step-kicker">Neste navegador</p><h2 id="historyHeading">Histórico de prompts</h2></div><button type="button" id="clearHistory" class="button danger-ghost">Limpar histórico</button></div>
+      <div class="section-heading compact"><div><p class="step-kicker">Neste navegador</p><h2 id="historyHeading">Histórico</h2></div><button type="button" id="clearHistory" class="button danger-ghost">Limpar histórico</button></div>
       <div id="historyList" class="history-list"></div>
     </section>
   </main>
+
+  <dialog id="preferencesDialog" class="modal">
+    <form method="dialog" id="preferencesForm">
+      <div class="modal-heading"><div><p class="step-kicker">Configuração recorrente</p><h2>Preferências</h2></div><button class="icon-button" value="cancel" aria-label="Fechar preferências">×</button></div>
+      <div class="preferences-grid">
+        <div class="field"><label for="prefAgent">Agente padrão</label><select id="prefAgent" name="agent"><option>Codex</option><option>Google Antigravity</option><option>Claude Code</option><option>Genérico</option></select></div>
+        <div class="field"><label for="prefLanguage">Idioma do prompt</label><select id="prefLanguage" name="language"><option>Português</option><option>Inglês</option></select></div>
+        <div class="field"><label for="prefDetail">Nível de detalhamento</label><select id="prefDetail" name="detailLevel"><option>Conciso</option><option>Equilibrado</option><option>Detalhado</option></select></div>
+      </div>
+      <div class="preference-checks">
+        <label><input type="checkbox" name="planningDefault"> Usar modo planejamento por padrão</label>
+        <label><input type="checkbox" name="createBranch"> Criar branch</label>
+        <label><input type="checkbox" name="createCommit"> Gerar commit</label>
+        <label><input type="checkbox" name="runTests"> Executar testes</label>
+        <label><input type="checkbox" name="documentChanges"> Documentar alterações</label>
+        <label><input type="checkbox" name="preserveVisual"> Preservar padrão visual</label>
+        <label><input type="checkbox" name="allowDatabase"> Permitir alteração de banco de dados</label>
+      </div>
+      <div class="modal-actions"><button class="button ghost" value="cancel">Cancelar</button><button type="button" class="button" id="savePreferences">Salvar preferências</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="templatesDialog" class="modal templates-modal">
+    <div class="modal-heading"><div><p class="step-kicker">Comece mais rápido</p><h2>Modelos rápidos</h2></div><button class="icon-button" id="closeTemplates" aria-label="Fechar modelos">×</button></div>
+    <p class="modal-intro">O modelo preenche os quatro campos principais. Tudo continua editável.</p>
+    <div id="templateGrid" class="template-grid"></div>
+  </dialog>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/questions.js"></script>
-  <script src="js/templates.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/questions.js"></script><script src="js/templates.js"></script><script src="js/storage.js"></script><script src="js/app.js"></script>
 </body>
 </html>

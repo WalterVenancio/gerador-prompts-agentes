@@ -8,13 +8,16 @@ Guiar pessoas com pouco conhecimento técnico por perguntas objetivas, sem exigi
 
 ## Funcionalidades
 
-- formulário guiado em seis etapas com barra de progresso;
-- dez tipos de solicitação e perguntas específicas para cada tipo;
+- fluxo compacto em três etapas com barra de progresso;
+- quatro perguntas essenciais como núcleo de qualquer solicitação;
+- classificação automática entre dez tipos, com ajuste manual;
+- perguntas complementares condicionais e opcionais;
+- preferências persistentes para agente, planejamento, Git, testes, documentação, idioma e detalhamento;
 - doze modelos rápidos editáveis;
-- revisão obrigatória antes da geração;
+- revisão, premissas, pontos pendentes e riscos antes do resultado;
 - validação dos campos mínimos;
 - especificação técnica com 24 seções;
-- prompt final adaptado à ferramenta escolhida;
+- prompt final adaptado ao agente e idioma escolhidos;
 - classificação automática em simples, média, complexa ou crítica;
 - recomendação de execução direta ou modo planejamento;
 - salvamento automático e manual de rascunho no `localStorage`;
@@ -70,9 +73,9 @@ Antes de configurar `prompts.venancio.eng.br`, confirme o endereço Pages public
 
 Edite `js/questions.js`:
 
-- `types` contém as categorias exibidas na primeira etapa;
-- `conditional` contém os campos de cada categoria;
-- `general` contém as perguntas comuns.
+- `types` contém as categorias usadas na classificação;
+- `conditional` contém os campos principais e o bloco “Mais detalhes” de cada categoria;
+- `sharedMore` contém perguntas opcionais compartilhadas.
 
 Cada pergunta usa um identificador único, rótulo, tipo e, quando aplicável, opções. Se uma nova resposta também precisar aparecer em uma seção técnica específica, inclua seu identificador no mapeamento da função `buildResult` em `js/app.js`.
 
@@ -85,7 +88,9 @@ Adicione um objeto ao array em `js/templates.js` com:
   name: 'Nome visível',
   type: 'feature',
   desiredChange: 'Texto inicial editável',
-  expectedResult: 'Resultado inicial editável'
+  currentBehavior: 'Situação atual editável',
+  expectedResult: 'Resultado inicial editável',
+  preserve: 'Condições que devem ser preservadas'
 }
 ```
 
@@ -93,7 +98,7 @@ O valor de `type` deve corresponder a um identificador existente em `questions.j
 
 ## Histórico e armazenamento local
 
-O botão **Limpar histórico** remove os prompts já gerados. **Limpar formulário** também remove o rascunho atual. Os dados ficam apenas no `localStorage` do navegador e podem desaparecer ao limpar dados do site, usar modo privado, trocar de navegador ou dispositivo. O histórico é limitado aos 50 itens mais recentes.
+O botão **Limpar histórico** remove os prompts já gerados. **Limpar formulário** também remove o rascunho atual. Preferências, rascunho e histórico usam chaves separadas no `localStorage`. Registros do formato anterior são convertidos ao serem abertos, sem apagar o conteúdo original. Os dados podem desaparecer ao limpar dados do site, usar modo privado, trocar de navegador ou dispositivo. O histórico é limitado aos 50 itens mais recentes.
 
 ## Segurança
 
